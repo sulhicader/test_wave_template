@@ -1,0 +1,109 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "app"
+description = 'Wave application template'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "H2O.ai", email = "support@h2o.ai" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["dependencies", "version"]
+
+[tool.hatch.version]
+path = "app.toml"
+pattern = "Version = ['\"](?P<version>.*)['\"]"
+
+[project.urls]
+Documentation = "https://github.com/h2oai/wave-template#readme"
+Issues = "https://github.com/h2oai/wave-template/issues"
+Source = "https://github.com/h2oai/wave-template"
+
+[tool.hatch.build]
+include = [
+  "src/*.py",
+  "/static",
+]
+artifacts = [
+  "src/*.so",
+]
+
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=app --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+app = "cd src && wave run app"
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pytest-asyncio==0.20.2",
+  "pytest==7.2",
+]
+dev-mode = false
+
+[tool.hatch.envs.test.scripts]
+pytest = "python -m pytest {args}"
+
+[tool.hatch.envs.lint]
+dependencies = [
+  "black==22.10.0",
+  "flake8-bugbear==22.10.27",
+  "flake8-builtins==1.5.3",
+  "flake8-deprecated==1.3",
+  "flake8-eradicate==1.4",
+  "flake8==5.0.4",
+  "isort==5.12",
+  "mypy~=1.1",
+]
+
+[tool.hatch.envs.lint.scripts]
+check = [
+  "black --check .",
+  "isort --check-only .",
+  "flake8 src tests",
+  "mypy src",
+]
+fix = [
+  "isort .",
+  "black .",
+  "check",
+]
+
+[tool.black]
+skip-magic-trailing-comma = true
+
+[tool.isort]
+force_single_line = true
+known_application = ["h2o_discovery"]
+profile = "appnexus"
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "src/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]

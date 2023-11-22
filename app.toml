@@ -1,0 +1,13 @@
+[App]
+Name = "ai.h2o.wave.wave-template-app"
+Version = "0.1.0"
+Title = "Wave App Template"
+Description = "A template app to demonstrate project structure and automation best practices."
+Category = "Other"
+Keywords = ["wave", "wave apps"]
+
+[Runtime]
+Module = "app"
+EnableOIDC = true
+RoutingMode = "BASE_URL"
+RuntimeVersion = "deb11_py310_wlatest"

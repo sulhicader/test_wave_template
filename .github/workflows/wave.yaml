@@ -1,0 +1,21 @@
+name: Wave Bundle
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  bundle:
+    name: Create Wave Bundle
+    uses: ./.github/workflows/wave-bundle.yaml
+
+  publish:
+    needs: bundle
+    name: Build and Publish
+    uses: ./.github/workflows/wave-publish.yaml
+
+  helm-publish:
+    needs: bundle
+    name: Build and Publish Helm Chart
+    uses: ./.github/workflows/helm-release.yaml
